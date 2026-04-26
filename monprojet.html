@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carlos BAYO ATIOUKPE — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #22240b;
+    --surface: #0d1117;
+    --card: #1a2342;
+    --border: #f5fb83;
+    --primary: #00d4ff;
+    --secondary: #7c3aed;
+    --accent: #10b981;
+    --warn: #f59e0b;
+    --white: #f0f6ff;
+    --muted: #6b7fa3;
+    --text: #c9d8f0;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* ─── CUSTOM CURSOR ─── */
+  .cursor {
+    position: fixed; width: 12px; height: 12px;
+    background: var(--primary); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transition: transform 0.15s ease;
+    mix-blend-mode: screen;
+  }
+  .cursor-ring {
+    position: fixed; width: 36px; height: 36px;
+    border: 1px solid rgba(0,212,255,0.4); border-radius: 50%;
+    pointer-events: none; z-index: 9998;
+    transition: all 0.25s ease;
+  }
+
+  /* ─── GRID BACKGROUND ─── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none; z-index: 0;
+  }
+
+  /* ─── NOISE OVERLAY ─── */
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: 0.4;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 60px;
+    background: rgba(8,12,16,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px; color: var(--primary); letter-spacing: 0.1em;
+  }
+  .nav-logo span { color: var(--muted); }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--muted); text-decoration: none;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    transition: color 0.2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -4px; left: 0;
+    width: 0; height: 1px; background: var(--primary);
+    transition: width 0.3s;
+  }
+  .nav-links a:hover { color: var(--primary); }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-cta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; padding: 9px 20px;
+    border: 1px solid var(--primary); color: var(--primary);
+    text-decoration: none; letter-spacing: 0.08em;
+    transition: all 0.25s;
+  }
+  .nav-cta:hover { background: var(--primary); color: var(--bg); }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh; position: relative; z-index: 1;
+    display: flex; align-items: center;
+    padding: 120px 60px 80px;
+    overflow: hidden;
+  }
+
+  /* Glowing orbs */
+  .orb {
+    position: absolute; border-radius: 50%;
+    filter: blur(80px); pointer-events: none;
+  }
+  .orb-1 {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(0,212,255,0.12) 0%, transparent 70%);
+    top: -100px; right: -100px;
+    animation: float 8s ease-in-out infinite;
+  }
+  .orb-2 {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(124,58,237,0.1) 0%, transparent 70%);
+    bottom: -80px; left: 200px;
+    animation: float 10s ease-in-out infinite reverse;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-30px) scale(1.05); }
+  }
+
+  .hero-left { flex: 1; max-width: 680px; }
+
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--accent); letter-spacing: 0.1em;
+    margin-bottom: 28px;
+  }
+  .hero-tag::before {
+    content: ''; width: 24px; height: 1px; background: var(--accent);
+  }
+
+  .hero-name {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(48px, 6vw, 80px); font-weight: 800;
+    color: var(--white); line-height: 1.0;
+    margin-bottom: 6px;
+    letter-spacing: -0.02em;
+  }
+  .hero-name .highlight {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px; color: var(--primary); margin-bottom: 28px;
+    opacity: 0.9;
+  }
+  .typing-cursor {
+    display: inline-block; width: 2px; height: 18px;
+    background: var(--primary); margin-left: 2px;
+    animation: blink 1s infinite;
+    vertical-align: middle;
+  }
+  @keyframes blink { 0%,49% { opacity: 1; } 50%,100% { opacity: 0; } }
+
+  .hero-desc {
+    font-size: 17px; color: var(--muted); line-height: 1.75;
+    max-width: 520px; margin-bottom: 44px;
+  }
+  .hero-desc strong { color: var(--text); }
+
+  .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 52px; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--primary); color: var(--bg);
+    padding: 14px 28px; font-weight: 700; font-size: 14px;
+    text-decoration: none; letter-spacing: 0.04em;
+    transition: all 0.25s; position: relative; overflow: hidden;
+  }
+  .btn-primary::before {
+    content: ''; position: absolute; inset: 0;
+    background: rgba(255,255,255,0.15); transform: translateX(-100%);
+    transition: transform 0.3s;
+  }
+  .btn-primary:hover::before { transform: translateX(0); }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid var(--border); color: var(--text);
+    padding: 14px 28px; font-size: 14px;
+    text-decoration: none; letter-spacing: 0.04em;
+    transition: all 0.25s;
+  }
+  .btn-ghost:hover { border-color: var(--primary); color: var(--primary); }
+
+  .hero-stats {
+    display: flex; gap: 44px;
+    border-top: 1px solid var(--border); padding-top: 40px;
+  }
+  .stat-val {
+    font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 800;
+    color: var(--primary); line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label { font-size: 12px; color: var(--muted); letter-spacing: 0.06em; }
+
+  .hero-right {
+    flex: 1; display: flex; justify-content: flex-end; align-items: center;
+    position: relative;
+  }
+  .hero-code-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 28px;
+    width: 420px; position: relative;
+    box-shadow: 0 0 60px rgba(0,212,255,0.07), 0 24px 60px rgba(0,0,0,0.5);
+    animation: float 7s ease-in-out infinite;
+  }
+  .code-header {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 20px;
+  }
+  .code-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+  .code-dot.r { background: #ff5f57; }
+  .code-dot.y { background: #febc2e; }
+  .code-dot.g { background: #28c840; }
+  .code-file {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--muted); margin-left: auto;
+  }
+  pre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px; line-height: 1.8;
+    white-space: pre-wrap;
+  }
+  .c-gray   { color: #5a6b8a; }
+  .c-purple { color: #bd93f9; }
+  .c-blue   { color: var(--primary); }
+  .c-green  { color: var(--accent); }
+  .c-orange { color: var(--warn); }
+  .c-white  { color: var(--white); }
+  .c-pink   { color: #ff79c6; }
+
+  /* ─── SECTION GENERIC ─── */
+  section { position: relative; z-index: 1; padding: 100px 60px; }
+  .section-chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--primary); letter-spacing: 0.12em;
+    text-transform: uppercase; margin-bottom: 16px;
+  }
+  .section-chip::before {
+    content: '//'; color: var(--muted);
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 4vw, 52px); font-weight: 800;
+    color: var(--white); line-height: 1.1; letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+  .section-sub {
+    font-size: 16px; color: var(--muted); line-height: 1.7;
+    max-width: 580px; margin-bottom: 60px;
+  }
+  .divider {
+    height: 1px; background: linear-gradient(to right, var(--border), transparent);
+    margin: 0 60px;
+  }
+
+  /* ─── À PROPOS ─── */
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start;
+  }
+  .about-text p {
+    font-size: 16px; color: var(--muted); line-height: 1.85;
+    margin-bottom: 18px;
+  }
+  .about-text p strong { color: var(--text); }
+  .info-list { list-style: none; margin-top: 28px; }
+  .info-list li {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 14px 0; border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+  .info-list li:last-child { border-bottom: none; }
+  .info-key {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--primary); letter-spacing: 0.08em;
+    min-width: 120px; text-transform: uppercase; padding-top: 2px;
+  }
+  .info-val { color: var(--text); line-height: 1.5; }
+
+  /* About right */
+  .about-right { display: flex; flex-direction: column; gap: 20px; }
+  .highlight-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 8px; padding: 24px;
+    position: relative; overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .highlight-card::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 3px; height: 100%; background: var(--primary);
+  }
+  .highlight-card:nth-child(2)::before { background: var(--secondary); }
+  .highlight-card:nth-child(3)::before { background: var(--accent); }
+  .highlight-card:hover { border-color: var(--primary); transform: translateX(4px); }
+  .highlight-card h4 {
+    font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700;
+    color: var(--white); margin-bottom: 6px;
+  }
+  .highlight-card p { font-size: 13.5px; color: var(--muted); line-height: 1.6; }
+
+  /* ─── COMPÉTENCES ─── */
+  .skills-bg { background: var(--surface); }
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+  .skill-cat {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 8px; padding: 28px;
+    transition: border-color 0.3s;
+  }
+  .skill-cat:hover { border-color: rgba(0,212,255,0.3); }
+  .skill-cat-header {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 22px;
+  }
+  .skill-icon {
+    width: 36px; height: 36px; border-radius: 6px;
+    background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.2);
+    display: flex; align-items: center; justify-content: center; font-size: 18px;
+  }
+  .skill-icon.purple { background: rgba(124,58,237,0.1); border-color: rgba(124,58,237,0.2); }
+  .skill-icon.green { background: rgba(16,185,129,0.1); border-color: rgba(16,185,129,0.2); }
+  .skill-cat h3 {
+    font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; color: var(--white);
+  }
+  .skill-bar-list { display: flex; flex-direction: column; gap: 14px; }
+  .skill-bar-item {}
+  .skill-bar-top {
+    display: flex; justify-content: space-between;
+    font-size: 13px; margin-bottom: 7px;
+  }
+  .skill-bar-name { color: var(--text); }
+  .skill-bar-pct {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--primary);
+  }
+  .skill-track {
+    height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden;
+  }
+  .skill-fill {
+    height: 100%; border-radius: 2px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    transform-origin: left;
+    animation: fillBar 1.2s ease forwards;
+    transform: scaleX(0);
+  }
+  @keyframes fillBar { to { transform: scaleX(1); } }
+  .skill-fill.green-fill { background: linear-gradient(90deg, var(--accent), #06b6d4); }
+  .skill-fill.purple-fill { background: linear-gradient(90deg, var(--secondary), #e879f9); }
+
+  .tech-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+  .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; padding: 6px 14px;
+    border: 1px solid var(--border); color: var(--muted);
+    border-radius: 2px; transition: all 0.2s; cursor: default;
+  }
+  .tag:hover { border-color: var(--primary); color: var(--primary); background: rgba(0,212,255,0.05); }
+
+  /* ─── PROJETS ─── */
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 24px; }
+  .project-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    position: relative;
+  }
+  .project-card:hover {
+    border-color: rgba(0,212,255,0.4);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 30px rgba(0,212,255,0.06);
+  }
+  .project-top {
+    padding: 28px 28px 0;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 16px;
+  }
+  .project-icon {
+    width: 48px; height: 48px; border-radius: 10px; font-size: 24px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.15);
+  }
+  .project-links { display: flex; gap: 8px; }
+  .project-link {
+    width: 32px; height: 32px; border-radius: 6px;
+    border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;
+    color: var(--muted); text-decoration: none; font-size: 13px;
+    transition: all 0.2s;
+  }
+  .project-link:hover { border-color: var(--primary); color: var(--primary); }
+  .project-body { padding: 0 28px 28px; }
+  .project-body h3 {
+    font-family: 'Syne', sans-serif; font-size: 19px; font-weight: 700;
+    color: var(--white); margin-bottom: 10px;
+  }
+  .project-body p { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 18px; }
+  .project-stack { display: flex; flex-wrap: wrap; gap: 6px; }
+  .stack-pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; padding: 4px 10px;
+    background: rgba(0,212,255,0.07); border: 1px solid rgba(0,212,255,0.15);
+    color: var(--primary); border-radius: 2px; letter-spacing: 0.06em;
+  }
+  .project-card.featured {
+    border-color: rgba(124,58,237,0.3);
+  }
+  .project-card.featured:hover { border-color: var(--secondary); box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 30px rgba(124,58,237,0.08); }
+
+  /* ─── ABCPRODUCTION ─── */
+  .abc-section { background: var(--surface); }
+  .abc-inner {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center;
+  }
+  .abc-badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--warn); letter-spacing: 0.12em;
+    border: 1px solid rgba(245,158,11,0.3); padding: 5px 14px;
+    margin-bottom: 18px;
+  }
+  .abc-inner .section-title { margin-bottom: 12px; }
+  .abc-desc { font-size: 16px; color: var(--muted); line-height: 1.8; margin-bottom: 28px; }
+  .abc-services { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 36px; }
+  .abc-services li {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 15px; color: var(--text);
+  }
+  .abc-services li::before {
+    content: '▸'; color: var(--warn); font-size: 12px;
+  }
+  .abc-right { display: flex; flex-direction: column; gap: 16px; }
+  .abc-stat-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 8px; padding: 24px;
+    display: flex; align-items: center; gap: 20px;
+    transition: border-color 0.3s;
+  }
+  .abc-stat-card:hover { border-color: rgba(245,158,11,0.3); }
+  .abc-stat-icon {
+    width: 50px; height: 50px; border-radius: 10px;
+    background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.2);
+    display: flex; align-items: center; justify-content: center; font-size: 24px;
+    flex-shrink: 0;
+  }
+  .abc-stat-val {
+    font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800;
+    color: var(--warn); line-height: 1;
+  }
+  .abc-stat-label { font-size: 13px; color: var(--muted); }
+
+  /* ─── FORMATION ─── */
+  .timeline { position: relative; }
+  .timeline::before {
+    content: ''; position: absolute; left: 19px; top: 0; bottom: 0;
+    width: 1px; background: linear-gradient(to bottom, var(--primary), var(--secondary), transparent);
+  }
+  .timeline-item {
+    display: flex; gap: 32px; margin-bottom: 40px;
+    padding-left: 0;
+  }
+  .timeline-dot {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--card); border: 2px solid var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0; z-index: 1;
+    position: relative;
+  }
+  .timeline-content {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 8px; padding: 24px; flex: 1;
+    transition: border-color 0.3s;
+  }
+  .timeline-content:hover { border-color: rgba(0,212,255,0.3); }
+  .timeline-year {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--primary); letter-spacing: 0.1em;
+    margin-bottom: 6px;
+  }
+  .timeline-content h3 {
+    font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700;
+    color: var(--white); margin-bottom: 4px;
+  }
+  .timeline-content .school {
+    font-size: 13.5px; color: var(--muted); margin-bottom: 10px;
+  }
+  .timeline-content p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+  /* ─── CONTACT ─── */
+  .contact-bg { background: var(--surface); }
+  .contact-inner {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: start;
+  }
+  .contact-items { display: flex; flex-direction: column; gap: 16px; margin-bottom: 36px; }
+  .contact-item {
+    display: flex; align-items: center; gap: 16px;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 8px; padding: 18px 22px;
+    transition: border-color 0.3s;
+  }
+  .contact-item:hover { border-color: rgba(0,212,255,0.3); }
+  .contact-icon {
+    width: 42px; height: 42px; border-radius: 8px;
+    background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.15);
+    display: flex; align-items: center; justify-content: center; font-size: 18px;
+    flex-shrink: 0;
+  }
+  .contact-label { font-size: 11px; color: var(--muted); font-family: 'JetBrains Mono', monospace; letter-spacing: 0.08em; text-transform: uppercase; }
+  .contact-val { font-size: 15px; color: var(--text); margin-top: 2px; }
+  .social-grid { display: flex; gap: 10px; flex-wrap: wrap; }
+  .social-btn {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--card); border: 1px solid var(--border);
+    color: var(--muted); text-decoration: none;
+    padding: 12px 18px; font-size: 13px;
+    transition: all 0.25s;
+  }
+  .social-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+  /* Form */
+  .contact-form { display: flex; flex-direction: column; gap: 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .form-input, .form-textarea {
+    background: var(--card); border: 1px solid var(--border);
+    color: var(--text); padding: 14px 16px;
+    font-family: 'Outfit', sans-serif; font-size: 14px;
+    outline: none; transition: border-color 0.25s;
+    border-radius: 4px;
+  }
+  .form-input:focus, .form-textarea:focus { border-color: var(--primary); }
+  .form-textarea { min-height: 120px; resize: vertical; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    position: relative; z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 40px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .footer-left {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--muted);
+  }
+  .footer-left span { color: var(--primary); }
+  .footer-right { font-size: 12px; color: var(--muted); }
+
+  /* ─── SCROLL ANIMATION ─── */
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 900px) {
+    nav { padding: 16px 20px; }
+    .nav-links { display: none; }
+    section { padding: 70px 20px; }
+    .hero { padding: 100px 20px 60px; flex-direction: column; }
+    .hero-right { display: none; }
+    .about-grid, .abc-inner, .contact-inner { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 12px; text-align: center; padding: 30px 20px; }
+    .divider { margin: 0 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo"><span>~/</span>carlos-bayo</div>
+  <ul class="nav-links">
+    <li><a href="#about">À propos</a></li>
+    <li><a href="#skills">Compétences</a></li>
+    <li><a href="#projects">Projets</a></li>
+    <li><a href="#abc">ABCPRODUCTION</a></li>
+    <li><a href="#formation">Formation</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Me contacter →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <div class="hero-left">
+    <div class="hero-tag">Disponible pour des missions freelance</div>
+
+    <h1 class="hero-name">
+      Carlos<br>
+      <span class="highlight">BAYO</span><br>
+      ATIOUKPE
+    </h1>
+
+    <div class="hero-role">
+      <span id="typed-text"></span><span class="typing-cursor"></span>
+    </div>
+
+    <p class="hero-desc">
+      Étudiant en <strong>Licence Professionnelle 1 — Génie Logiciel (SIL)</strong>, passionné par le développement web et les nouvelles technologies. Fondateur de <strong>ABCPRODUCTION</strong>, entreprise spécialisée dans la formation en programmation web.
+    </p>
+
+    <div class="hero-btns">
+      <a href="#projects" class="btn-primary">Voir mes projets →</a>
+      <a href="#contact" class="btn-ghost">Me contacter</a>
+    </div>
+
+    <div class="hero-stats">
+      <div>
+        <div class="stat-val">1re</div>
+        <div class="stat-label">Année de Licence</div>
+      </div>
+      <div>
+        <div class="stat-val">SIL</div>
+        <div class="stat-label">Génie Logiciel</div>
+      </div>
+      <div>
+        <div class="stat-val">ABC</div>
+        <div class="stat-label">Production — Fondateur</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-code-card">
+      <div class="code-header">
+        <div class="code-dot r"></div>
+        <div class="code-dot y"></div>
+        <div class="code-dot g"></div>
+        <div class="code-file">carlos.js</div>
+      </div>
+      <pre><span class="c-purple">const</span> <span class="c-blue">carlos</span> <span class="c-white">=</span> <span class="c-white">{</span>
+  <span class="c-green">name</span><span class="c-white">:</span> <span class="c-orange">"Carlos BAYO ATIOUKPE"</span><span class="c-white">,</span>
+  <span class="c-green">role</span><span class="c-white">:</span> <span class="c-orange">"Développeur Web Junior"</span><span class="c-white">,</span>
+  <span class="c-green">level</span><span class="c-white">:</span> <span class="c-orange">"Licence Pro L1 — SIL"</span><span class="c-white">,</span>
+  <span class="c-green">entreprise</span><span class="c-white">:</span> <span class="c-orange">"ABCPRODUCTION"</span><span class="c-white">,</span>
+
+  <span class="c-green">stack</span><span class="c-white">: [</span>
+    <span class="c-orange">"HTML"</span><span class="c-white">,</span> <span class="c-orange">"CSS"</span><span class="c-white">,</span>
+    <span class="c-orange">"JavaScript"</span><span class="c-white">,</span> <span class="c-orange">"PHP"</span>
+  <span class="c-white">],</span>
+
+  <span class="c-green">objectif</span><span class="c-white">:</span> <span class="c-orange">"Full-Stack Developer"</span><span class="c-white">,</span>
+
+  <span class="c-green">passion</span><span class="c-white">: [</span>
+    <span class="c-orange">"Code"</span><span class="c-white">,</span>
+    <span class="c-orange">"Formation"</span><span class="c-white">,</span>
+    <span class="c-orange">"Innovation"</span>
+  <span class="c-white">]</span>
+<span class="c-white">};</span>
+
+<span class="c-gray">// Toujours prêt à apprendre 🚀</span></pre>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- À PROPOS -->
+<section id="about">
+  <div class="section-chip">À propos de moi</div>
+  <div class="section-title">Qui suis-je ?</div>
+  <p class="section-sub">Étudiant ambitieux, développeur web et entrepreneur passionné par la technologie et l'impact numérique en Afrique.</p>
+
+  <div class="about-grid reveal">
+    <div class="about-text">
+      <p>
+        Je suis <strong>Carlos BAYO ATIOUKPE</strong>, étudiant en <strong>Licence Professionnelle 1 de Systèmes Informatiques et Logiciels (Génie Logiciel)</strong>. Passionné par le développement web depuis mes débuts, je m'efforce chaque jour d'acquérir de nouvelles compétences techniques.
+      </p>
+      <p>
+        En parallèle de mes études, j'ai fondé <strong>ABCPRODUCTION</strong>, une entreprise dédiée à la <strong>formation en langages de programmation web</strong> et à la vente de <strong>documents numériques informatiques</strong>. Je crois fermement que le savoir technologique doit être accessible à tous.
+      </p>
+      <p>
+        Mon objectif est de devenir un développeur <strong>Full-Stack</strong> accompli, capable de concevoir des solutions numériques innovantes adaptées aux besoins du marché africain.
+      </p>
+
+      <ul class="info-list">
+        <li>
+          <span class="info-key">Nom complet</span>
+          <span class="info-val">Carlos BAYO ATIOUKPE</span>
+        </li>
+        <li>
+          <span class="info-key">Niveau</span>
+          <span class="info-val">Licence Professionnelle 1 — SIL / Génie Logiciel</span>
+        </li>
+        <li>
+          <span class="info-key">Statut</span>
+          <span class="info-val">Étudiant · Développeur Web Junior · Entrepreneur</span>
+        </li>
+        <li>
+          <span class="info-key">Entreprise</span>
+          <span class="info-val">ABCPRODUCTION — Fondateur & Promoteur</span>
+        </li>
+        <li>
+          <span class="info-key">Disponibilité</span>
+          <span class="info-val" style="color:var(--accent)">✓ Disponible pour des projets freelance</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="about-right">
+      <div class="highlight-card">
+        <h4>🎓 Étudiant en Génie Logiciel</h4>
+        <p>Formation rigoureuse en Systèmes Informatiques et Logiciels, avec une spécialisation en développement web et conception de systèmes.</p>
+      </div>
+      <div class="highlight-card">
+        <h4>💻 Développeur Web Junior</h4>
+        <p>Maîtrise des technologies web fondamentales : HTML, CSS, JavaScript, PHP. En constante progression vers des frameworks modernes.</p>
+      </div>
+      <div class="highlight-card">
+        <h4>🚀 Fondateur d'ABCPRODUCTION</h4>
+        <p>Entrepreneur engagé dans la démocratisation des compétences numériques à travers la formation et la distribution de ressources informatiques.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- COMPÉTENCES -->
+<section id="skills" class="skills-bg">
+  <div class="section-chip">Mes compétences</div>
+  <div class="section-title">Stack technique</div>
+  <p class="section-sub">Les technologies et outils que je maîtrise et que j'utilise au quotidien dans mes projets.</p>
+
+  <div class="skills-grid reveal">
+    <div class="skill-cat">
+      <div class="skill-cat-header">
+        <div class="skill-icon">🌐</div>
+        <h3>Front-End</h3>
+      </div>
+      <div class="skill-bar-list">
+        <div class="skill-bar-item">
+          <div class="skill-bar-top"><span class="skill-bar-name">HTML5</span><span class="skill-bar-pct">85%</span></div>
+          <div class="skill-track"><div class="skill-fill" style="width:85%"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-top"><span class="skill-bar-name">CSS3</span><span class="skill-bar-pct">78%</span></div>
+          <div class="skill-track"><div class="skill-fill" style="width:78%"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-top"><span class="skill-bar-name">JavaScript</span><span class="skill-bar-pct">65%</span></div>
+          <div class="skill-track"><div class="skill-fill" style="width:65%"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-top"><span class="skill-bar-name">Bootstrap</span><span class="skill-bar-pct">70%</span></div>
+          <div class="skill-track"><div class="skill-fill" style="width:70%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="skill-cat">
+      <div class="skill-cat-header">
+        <div class="skill-icon purple">⚙️</div>
+        <h3>Back-End</h3>
+      </div>
+      <div class="skill-bar-list">
+        <div class="skill-bar-item">
+          <div class="skill-bar-top"><span class="skill-bar-name">PHP</span><span class="skill-bar-pct">60%</span></div>
+          <div class="skill-track"><div class="skill-fill purple-fill" style="width:60%"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-top"><span class="skill-bar-name">MySQL</span><span class="skill-bar-pct">55%</span></div>
+          <div class="skill-track"><div class="skill-fill purple-fill" style="width:55%"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-top"><span class="skill-bar-name">SQL</span><span class="skill-bar-pct">58%</span></div>
+          <div class="skill-track"><div class="skill-fill purple-fill" style="width:58%"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-top"><span class="skill-bar-name">MVC Architecture</span><span class="skill-bar-pct">50%</span></div>
+          <div class="skill-track"><div class="skill-fill purple-fill" style="width:50%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="skill-cat">
+      <div class="skill-cat-header">
+        <div class="skill-icon green">🛠️</div>
+        <h3>Outils & Autres</h3>
+      </div>
+      <div class="skill-bar-list">
+        <div class="skill-bar-item">
+          <div class="skill-bar-top"><span class="skill-bar-name">Git & GitHub</span><span class="skill-bar-pct">65%</span></div>
+          <div class="skill-track"><div class="skill-fill green-fill" style="width:65%"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-top"><span class="skill-bar-name">VS Code</span><span class="skill-bar-pct">85%</span></div>
+          <div class="skill-track"><div class="skill-fill green-fill" style="width:85%"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-top"><span class="skill-bar-name">Figma (notions)</span><span class="skill-bar-pct">40%</span></div>
+          <div class="skill-track"><div class="skill-fill green-fill" style="width:40%"></div></div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-top"><span class="skill-bar-name">Linux</span><span class="skill-bar-pct">45%</span></div>
+          <div class="skill-track"><div class="skill-fill green-fill" style="width:45%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tech-tags reveal" style="margin-top: 40px;">
+    <span class="tag">HTML5</span><span class="tag">CSS3</span><span class="tag">JavaScript</span>
+    <span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">Bootstrap</span>
+    <span class="tag">Git</span><span class="tag">GitHub</span><span class="tag">VS Code</span>
+    <span class="tag">Responsive Design</span><span class="tag">SQL</span><span class="tag">MVC</span>
+    <span class="tag">Algorithmique</span><span class="tag">POO</span>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROJETS -->
+<section id="projects">
+  <div class="section-chip">Réalisations</div>
+  <div class="section-title">Mes Projets</div>
+  <p class="section-sub">Quelques projets que j'ai réalisés dans le cadre de mes études et de mon parcours en tant que développeur junior.</p>
+
+  <div class="projects-grid reveal">
+    <div class="project-card featured">
+      <div class="project-top">
+        <div class="project-icon">🏢</div>
+        <div class="project-links">
+          <a href="#" class="project-link" title="Code source">⌨</a>
+          <a href="#" class="project-link" title="Voir le projet">↗</a>
+        </div>
+      </div>
+      <div class="project-body">
+        <h3>Site Web ABCPRODUCTION</h3>
+        <p>Conception et développement du site vitrine de l'entreprise ABCPRODUCTION : présentation des formations, catalogue de documents numériques et formulaire de contact.</p>
+        <div class="project-stack">
+          <span class="stack-pill">HTML5</span>
+          <span class="stack-pill">CSS3</span>
+          <span class="stack-pill">JavaScript</span>
+          <span class="stack-pill">PHP</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-top">
+        <div class="project-icon">🛒</div>
+        <div class="project-links">
+          <a href="#" class="project-link">⌨</a>
+          <a href="#" class="project-link">↗</a>
+        </div>
+      </div>
+      <div class="project-body">
+        <h3>Plateforme de vente de documents</h3>
+        <p>Application web permettant la vente en ligne de documents numériques informatiques avec gestion des commandes et des utilisateurs.</p>
+        <div class="project-stack">
+          <span class="stack-pill">PHP</span>
+          <span class="stack-pill">MySQL</span>
+          <span class="stack-pill">Bootstrap</span>
+          <span class="stack-pill">JavaScript</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-top">
+        <div class="project-icon">📚</div>
+        <div class="project-links">
+          <a href="#" class="project-link">⌨</a>
+          <a href="#" class="project-link">↗</a>
+        </div>
+      </div>
+      <div class="project-body">
+        <h3>Système de gestion de formation</h3>
+        <p>Application de gestion des inscriptions et suivi des apprenants pour ABCPRODUCTION, avec espace étudiant et tableau de bord administrateur.</p>
+        <div class="project-stack">
+          <span class="stack-pill">PHP</span>
+          <span class="stack-pill">MySQL</span>
+          <span class="stack-pill">HTML/CSS</span>
+          <span class="stack-pill">MVC</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-top">
+        <div class="project-icon">🎨</div>
+        <div class="project-links">
+          <a href="#" class="project-link">⌨</a>
+          <a href="#" class="project-link">↗</a>
+        </div>
+      </div>
+      <div class="project-body">
+        <h3>Projets académiques SIL</h3>
+        <p>Ensemble de travaux pratiques et projets réalisés dans le cadre de la Licence Professionnelle : algorithmes, bases de données, développement web.</p>
+        <div class="project-stack">
+          <span class="stack-pill">Algorithmique</span>
+          <span class="stack-pill">SQL</span>
+          <span class="stack-pill">POO</span>
+          <span class="stack-pill">HTML/CSS</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ABCPRODUCTION -->
+<section id="abc" class="abc-section">
+  <div class="abc-inner reveal">
+    <div>
+      <div class="abc-badge">⚡ Mon Entreprise</div>
+      <div class="section-title">ABCPRODUCTION</div>
+      <p class="abc-desc">
+        Fondée et promue par Carlos BAYO ATIOUKPE, <strong style="color:var(--white)">ABCPRODUCTION</strong> est une entreprise spécialisée dans la <strong style="color:var(--warn)">formation en langages de programmation web</strong> et la <strong style="color:var(--warn)">vente de documents informatiques numériques</strong>.
+      </p>
+      <p class="abc-desc" style="margin-bottom: 24px;">
+        Notre mission : rendre la programmation accessible à tous les apprenants, du débutant au développeur confirmé, à travers des formations pratiques et des ressources numériques de qualité.
+      </p>
+      <ul class="abc-services">
+        <li>Formations en HTML, CSS, JavaScript, PHP</li>
+        <li>Vente de supports de cours numériques</li>
+        <li>Accompagnement personnalisé des apprenants</li>
+        <li>Ressources pédagogiques en informatique</li>
+        <li>Initiation à la programmation orientée objet</li>
+      </ul>
+      <a href="#contact" class="btn-primary" style="display:inline-flex;">Nous rejoindre →</a>
+    </div>
+
+    <div class="abc-right">
+      <div class="abc-stat-card">
+        <div class="abc-stat-icon">🎓</div>
+        <div>
+          <div class="abc-stat-val">ABC</div>
+          <div class="abc-stat-label">PRODUCTION — Fondateur & Promoteur</div>
+        </div>
+      </div>
+      <div class="abc-stat-card">
+        <div class="abc-stat-icon">💻</div>
+        <div>
+          <div class="abc-stat-val">5+</div>
+          <div class="abc-stat-label">Langages de programmation enseignés</div>
+        </div>
+      </div>
+      <div class="abc-stat-card">
+        <div class="abc-stat-icon">📄</div>
+        <div>
+          <div class="abc-stat-val">100%</div>
+          <div class="abc-stat-label">Documents numériques — Qualité garantie</div>
+        </div>
+      </div>
+      <div class="abc-stat-card">
+        <div class="abc-stat-icon">🌍</div>
+        <div>
+          <div class="abc-stat-val">BJ</div>
+          <div class="abc-stat-label">Bénin — Afrique de l'Ouest</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FORMATION -->
+<section id="formation">
+  <div class="section-chip">Parcours académique</div>
+  <div class="section-title">Ma Formation</div>
+  <p class="section-sub">Mon parcours éducatif qui forge mes compétences en informatique et développement logiciel.</p>
+
+  <div class="timeline reveal">
+    <div class="timeline-item">
+      <div class="timeline-dot">🎓</div>
+      <div class="timeline-content">
+        <div class="timeline-year">EN COURS — 2025 / 2026</div>
+        <h3>Licence Professionnelle 1 — Systèmes Informatiques et Logiciels</h3>
+        <div class="school">Génie Logiciel (SIL) — Enseignement Supérieur</div>
+        <p>Formation en développement logiciel, algorithmique avancée, bases de données, programmation orientée objet, architecture des systèmes et développement web. Spécialisation en Génie Logiciel.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">📘</div>
+      <div class="timeline-content">
+        <div class="timeline-year">2024 / 2025</div>
+        <h3>Initiation au Développement Web</h3>
+        <div class="school">Auto-formation & Pratique</div>
+        <p>Apprentissage des langages HTML, CSS, JavaScript et PHP. Réalisation des premiers projets web. Fondation d'ABCPRODUCTION pour partager les connaissances acquises.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">🏫</div>
+      <div class="timeline-content">
+        <div class="timeline-year">2024 / 2025</div>
+        <h3>Baccalauréat</h3>
+        <div class="school">Bénin</div>
+        <p>Obtention du Baccalauréat, ouvrant les portes de l'enseignement supérieur en informatique et technologie.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<section id="contact" class="contact-bg">
+  <div class="section-chip">Travaillons ensemble</div>
+  <div class="section-title">Me contacter</div>
+  <p class="section-sub">Un projet web, une collaboration ou une question sur ABCPRODUCTION ? N'hésitez pas à me joindre.</p>
+
+  <div class="contact-inner reveal">
+    <div>
+      <div class="contact-items">
+        <div class="contact-item">
+          <div class="contact-icon">📧</div>
+          <div>
+            <div class="contact-label">Email</div>
+            <div class="contact-val">carlosatioukpe611@gmail.com</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📍</div>
+          <div>
+            <div class="contact-label">Localisation</div>
+            <div class="contact-val"> COTONOU,Bénin, Afrique de l'Ouest</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">🏢</div>
+          <div>
+            <div class="contact-label">Entreprise</div>
+            <div class="contact-val">ABCPRODUCTION</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">✅</div>
+          <div>
+            <div class="contact-label">Statut</div>
+            <div class="contact-val" style="color:var(--accent)">Disponible pour projets freelance</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="social-grid">
+        <a href="#" class="social-btn">📘 Facebook</a>
+        <a href="#" class="social-btn">💼 LinkedIn</a>
+        <a href="#" class="social-btn">🐙 GitHub</a>
+        <a href="0192586743" class="social-btn">📱 WhatsApp</a>
+      </div>
+    </div>
+
+    <div>
+      <form class="contact-form" onsubmit="return false;">
+        <div class="form-group">
+          <label class="form-label">Votre nom</label>
+          <input type="text" class="form-input" placeholder="Jean DUPONT">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" placeholder="email@exemple.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Sujet</label>
+          <input type="text" class="form-input" placeholder="Projet web / Formation ABCPRODUCTION / ...">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Message</label>
+          <textarea class="form-textarea" placeholder="Décrivez votre projet ou votre demande..."></textarea>
+        </div>
+        <button type="submit" class="btn-primary" style="border:none;cursor:pointer;font-family:'Outfit',sans-serif;width:100%;justify-content:center;">
+          Envoyer le message →
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    <span>Carlos BAYO ATIOUKPE</span> · Développeur Web Junior · ABCPRODUCTION
+  </div>
+  <div class="footer-right">
+    Bénin, Afrique de l'Ouest · <span style="color:var(--accent)">✓ Disponible</span>
+  </div>
+</footer>
+
+<script>
+  // ─── Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = (mx - 6) + 'px';
+    cursor.style.top = (my - 6) + 'px';
+  });
+  function animRing() {
+    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+    ring.style.left = (rx - 18) + 'px'; ring.style.top = (ry - 18) + 'px';
+    requestAnimationFrame(animRing);
+  }
+  animRing();
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => { cursor.style.transform = 'scale(2)'; ring.style.transform = 'scale(1.5)'; });
+    el.addEventListener('mouseleave', () => { cursor.style.transform = 'scale(1)'; ring.style.transform = 'scale(1)'; });
+  });
+
+  // ─── Typing
+  const roles = ['Développeur Web Junior', 'Étudiant en Génie Logiciel', 'Fondateur d\'ABCPRODUCTION', 'Passionné du Code'];
+  let ri = 0, ci = 0, deleting = false;
+  const el = document.getElementById('typed-text');
+  function type() {
+    const word = roles[ri];
+    if (!deleting) {
+      el.textContent = word.slice(0, ++ci);
+      if (ci === word.length) { deleting = true; setTimeout(type, 1800); return; }
+    } else {
+      el.textContent = word.slice(0, --ci);
+      if (ci === 0) { deleting = false; ri = (ri + 1) % roles.length; }
+    }
+    setTimeout(type, deleting ? 60 : 90);
+  }
+  type();
+
+  // ─── Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => obs.observe(r));
+</script>
+</body>
+</html>
